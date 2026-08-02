@@ -16,8 +16,6 @@ The task is to predict the m-height from `(n, k, m, P)` with a neural network in
 
 One model per `(k, n, m)` combination, 21 in total, for k in {4, 5, 6}, n in {9, 10}, and m from 2 to n-k. The input size depends on `(k, n)` and the range of outputs depends on m, so separate models were easier than one shared model.
 
-Three details:
-
 - The models predict `log(m-height)` rather than the raw value. Raw m-heights span several orders of magnitude and are skewed. The output layer is `Dense(1, relu)`, so the prediction cannot drop below 0, which corresponds to an m-height of 1, the minimum. The inference function applies `exp` to the output.
 - Permuting the columns of `G` does not change the m-height, since the value depends only on sorted absolute values. Each training matrix is turned into four samples: the original plus three random column permutations of `P`.
 - Inputs are divided by 100. Entries of `P` are drawn from Uniform(-100, 100), while the positional encoding added to them is in [-1, 1]. Without rescaling, the entries dominate and the positional signal is lost. The same division is applied at training and inference time.
